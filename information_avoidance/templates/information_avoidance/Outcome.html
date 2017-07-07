@@ -1,0 +1,18 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Results
+{% endblock %}
+
+{% block content %}
+
+Your investment did {% if player.outcome == False %}not {% endif %} pay off.
+
+You have invested {{player.bet}} tokens and earned {{player.gross}} tokens from your investment.
+
+Total tokens earned: {{player.net}}
+
+    {% next_button %}
+
+{% endblock %}

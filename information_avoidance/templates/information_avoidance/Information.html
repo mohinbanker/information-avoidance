@@ -1,0 +1,44 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Information
+{% endblock %}
+
+{% block content %}
+
+{% if subsession.self_avoidance == 1 %}
+In this round, you have chosen to invest a total of {{player.bet}} in Option {{player.option}}. You now have the option to find out how much you could have earned if you had instead invested {{player.bet}} tokens in Option {% if player.option == "A" %}B{% else %}A{% endif %}. Recall that the outcomes of these two options are independent, so if the investment di dno pay off with one option, it could still have paid off with the other option.
+
+Would you like to see how much you could have earned, if you had chosen differently?
+
+{% formfield player.self_avoidance %}
+{% endif %}
+
+{% if subsession.self_avoidance == 2 %}
+In this round, you have chosen to invest a total of {{player.bet}} in Option {{player.option}}. You now have the option to find out how much you could have earned if you had instead invested {{player.bet}} tokens in Option {% if player.option == "A" %}B{% else %}A{% endif %}. Recall that the outcomes of these two options are independent, so if the investment di dno pay off with one option, it could still have paid off with the other option.
+
+Would you like to see how much you could have earned, if you had chosen differently?
+
+{% formfield player.self_avoidance %}
+{% endif %}
+
+{% if subsession.self_avoidance == 3 %}
+In this round, you have chosen to invest a total of {{player.bet}} in Option {{player.option}}. You now have the option to find out how much you could have earned if you had instead invested {{player.bet}} tokens in Option {% if player.option == "A" %}B{% else %}A{% endif %}. Recall that the outcomes of these two options are independent, so if the investment di dno pay off with one option, it could still have paid off with the other option.
+
+Would you like to see how much you could have earned, if you had chosen differently?
+
+{% formfield player.self_avoidance %}
+{% endif %}
+
+{% if subsession.self_avoidance == 4 %}
+In this round, you have chosen to invest a total of {{player.bet}} in Option {{player.option}}. You now have the option to find out how much you could have earned if you had instead invested {{player.bet}} tokens in Option {% if player.option == "A" %}B{% else %}A{% endif %}. Recall that the outcomes of these two options are independent, so if the investment di dno pay off with one option, it could still have paid off with the other option.
+
+Would you like to see how much you could have earned, if you had chosen differently?
+
+{% formfield player.self_avoidance %}
+{% endif %}
+
+    {% next_button %}
+
+{% endblock %}

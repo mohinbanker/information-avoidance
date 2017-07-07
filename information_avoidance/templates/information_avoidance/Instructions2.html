@@ -1,0 +1,20 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Round 1
+{% endblock %}
+
+{% block content %}
+
+Available tokens to invest:{{player.tokens}}
+
+Option A: 4x with 50% probability and 0x with 50% probability
+
+Option B: 1.5x with 80% probability, 0.5x with 20% probability
+
+You may choose to invest any number of tokens in only <strong>one</strong> of the two options. The remaining tokens stay in your account and will be added to the potential winnings from this game. Recall that in the next two rounds, you will only be able to invest in the option you choose now.
+
+    {% next_button %}
+
+{% endblock %}

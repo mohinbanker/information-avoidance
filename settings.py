@@ -107,12 +107,12 @@ SESSION_CONFIG_DEFAULTS = {
 
 
 SESSION_CONFIGS = [
-    # {
-    #     'name': '...',
-    #     'display_name': '...',
-    #     'num_demo_participants': ...,
-    #     'app_sequence': ['...'],
-    # }
+    {
+        'name': 'information_avoidance',
+        'display_name': 'Information Avoidance',
+        'num_demo_participants': 1,
+        'app_sequence': ['information_avoidance'],
+    }
 ]
 
 # anything you put after the below line will override

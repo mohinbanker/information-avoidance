@@ -2,14 +2,14 @@
 {% load staticfiles otree_tags %}
 
 {% block title %}
-    Instructions
+    Information
 {% endblock %}
 
 {% block content %}
 
-Contains some condition-specific text. This text should be displayed for each participant as appropriate.
+You picked Option {{ player.chosen_option}}.</br>
+Another player picked Option {% if player.chosen_option == "A" %}B{% else %}A{% endif %}.</br>
 
-TBD.......................
 
     {% next_button %}
 

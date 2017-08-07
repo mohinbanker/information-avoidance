@@ -1,0 +1,81 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Round {{subsession.round_number}}
+{% endblock %}
+
+{% block content %}
+
+Available tokens to invest: {{Constants.tokens_per_subgame}}</br>
+
+<form required>
+{% if subsession.initial_round or previous_choice == "A" %}
+	<input type = "radio" name = "chosen_option" value = "A"> Option A: 4x with 50% probability and 0x with 50% probability</br>
+{% endif %}
+
+{% if subsession.initial_round or previous_choice == "B" %}
+	<input type = "radio" name = "chosen_option" value = "B"> Option B: 1.5x with 80% probability, 0.5x with 20% probability</br>
+{% endif %}
+</form>
+
+</br>
+
+You may choose to invest any number of tokens in only <strong>one</strong> of the two options. The remaining tokens stay in your account and will be added to the potential winnings from this game. Recall that in the next two rounds, you will only be able to invest in the option you choose now.</br>
+
+<!-- NOTE: I don't think this slider input works with Internet Explorer 9 or previous versions -->
+<input type = "range" value = "1" min = "1" max = "{{Constants.tokens_per_subgame}}" step = "1" name = "investment" oninput = "change_slider()" id = "investment_slider">
+
+<input type = "number" value = "1" id = "investment_text" onchange = "change_value()" onkeydown = "return FilterInput(event)" onpaste = "handlePaste(event)">
+    {% next_button %}
+
+{% endblock %}
+
+{% block scripts %}
+	<script>
+		function change_slider() {
+			var inv = document.getElementById("investment_slider").value;
+			document.getElementById("investment_text").value = inv;
+		};
+
+		function change_value(){
+			var inv = document.getElementById("investment_text").value;
+			var max = document.getElementById("investment_slider").max;
+			var min = document.getElementById("investment_slider").min;
+
+			if (inv > max){
+				inv = max;
+			}
+			if (inv < min){
+				inv = min;
+			}
+
+			inv = Math.round(parseInt(inv));
+			inv = inv.toString();
+
+			document.getElementById("investment_text").value = inv;
+			document.getElementById("investment_slider").value = inv;
+		}
+
+		// Code taken from https://stackoverflow.com/questions/31706611/why-does-the-html-input-with-type-number-allow-the-letter-e-to-be-entered-in
+		function FilterInput(event) {
+		    var keyCode = ('which' in event) ? event.which : event.keyCode;
+
+		    isNotWanted = (keyCode == 69 || keyCode == 101);
+		    return !isNotWanted;
+		};
+		function handlePaste (e) {
+		    var clipboardData, pastedData;
+
+		    // Get pasted data via clipboard API
+		    clipboardData = e.clipboardData || window.clipboardData;
+		    pastedData = clipboardData.getData('Text').toUpperCase();
+
+		    if(pastedData.indexOf('E')>-1) {
+		        //alert('found an E');
+		        e.stopPropagation();
+		        e.preventDefault();
+		    }
+		};
+	</script>
+{% endblock %}

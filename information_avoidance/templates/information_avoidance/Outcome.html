@@ -7,11 +7,13 @@
 
 {% block content %}
 
-Your investment did {% if player.outcome == False %}not {% endif %} pay off.
+Your investment did {% if player.outcome == False %}not {% endif %} pay off.</br>
 
-You have invested {{player.bet}} tokens and earned {{player.gross}} tokens from your investment.
+You have invested {{player.investment}} tokens and earned <b>{{player.earned}} tokens</b> from your investment.</br>
 
-Total tokens earned: {{player.net}}
+You chose not to invest <b>{{ tokens_not_invested }} tokens.</b></br>
+
+<b>Total tokens earned: {{player.tokens}}</b>
 
     {% next_button %}
 

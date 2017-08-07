@@ -110,7 +110,7 @@ SESSION_CONFIGS = [
     {
         'name': 'information_avoidance',
         'display_name': 'Information Avoidance',
-        'num_demo_participants': 1,
+        'num_demo_participants': 4,
         'app_sequence': ['information_avoidance'],
     }
 ]

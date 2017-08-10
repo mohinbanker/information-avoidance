@@ -35,6 +35,8 @@ class Subsession(BaseSubsession):
 
 
 
+
+
 class Group(BaseGroup):
     pass
 
@@ -42,8 +44,8 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     treatment = models.CharField(doc = "The treatment assigned to the player")
     information_shown = models.BooleanField(
-        initial = None,
-        blank = False,
+        initial = True,
+        blank = True,
         choices = [[True, "Yes"], [False, "No"]],
         widget = widgets.RadioSelect(),
         doc = "True iff the player opted in to see information")
@@ -67,3 +69,7 @@ class Player(BasePlayer):
     	widget = widgets.RadioSelect(),
         doc = "The lottery game chosen by the player in the previous round")
     
+    info_option = models.CharField(initial = None)
+    info_investment = models.IntegerField(initial = None)
+    info_outcome = models.BooleanField(initial = None)
+    info_earned = models.IntegerField(initial = None)

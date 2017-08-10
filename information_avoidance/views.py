@@ -91,15 +91,70 @@ class Survey4(Page):
     def is_displayed(self):
         return(self.player.round_number == Constants.num_rounds)
 
+class WaitForBets(WaitPage):
+    wait_for_all_groups = True
+
+    def after_all_players_arrive(self):
+
+        for fixed_player in self.subsession.get_players():
+            # Boolean to keep track if player has set their information variables
+            found_info = False 
+
+            # If player chose to view the outcome of someone else
+            if (fixed_player.treatment == "other" or fixed_player.treatment == "no_other"):
+                own_choice = fixed_player.chosen_option
+                players = self.subsession.get_players()
+                random.shuffle(players)
+
+                for p in players:
+                    if (p.chosen_option != own_choice):
+                        fixed_player.info_option = p.chosen_option
+                        fixed_player.info_investment = p.investment
+                        fixed_player.info_outcome = p.outcome
+                        fixed_player.info_earned = p.earned
+                        found_info = True
+                        break
+
+            # If player chose to view their own alternate outcome
+            if (found_info == False):
+                if (fixed_player.chosen_option == "A"):
+                    fixed_player.info_option = "B"
+                else:
+                    fixed_player.info_option = "A"
+
+                print(fixed_player.info_option)
+                fixed_player.info_investment = fixed_player.investment
+
+                if (fixed_player.info_option == "A"):
+                    prob_success = 0.5
+                else:
+                    prob_success = 0.8
+
+                outcomes = [True] * int(prob_success*10) + [False] * int((1 - prob_success) * 10)
+                fixed_player.info_outcome = random.choice(outcomes)
+                multiplier = 0
+                if (fixed_player.info_option == "A" and fixed_player.info_outcome == True):
+                    multiplier = 4
+                elif (fixed_player.info_option == "A" and fixed_player.info_outcome == False):
+                    multiplier = 0
+                elif (fixed_player.info_option == "B" and fixed_player.info_outcome == True):
+                    multiplier = 1.5
+                elif (fixed_player.info_option == "B" and fixed_player.info_outcome == False):
+                    multiplier = 0.5
+
+                fixed_player.info_earned = float(fixed_player.info_investment * multiplier)
+
+
 page_sequence = [
-    Introduction,
-    PRA,
-    Instructions1,
-    Instructions2,
+    # Introduction,
+    # PRA,
+    # Instructions1,
+    # Instructions2,
     Supergame,
     Outcome,
     Information,
-    #Show_Information,
+    WaitForBets,
+    Show_Information,
     Survey1,
     Survey2,
     Survey3,

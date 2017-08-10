@@ -7,27 +7,39 @@
 
 {% block content %}
 
-Available tokens to invest: {{Constants.tokens_per_subgame}}</br>
+Available tokens to invest: {{Constants.tokens_per_subgame}}</br></br>
 
 <form required>
 {% if subsession.initial_round or previous_choice == "A" %}
-	<input type = "radio" name = "chosen_option" value = "A"> Option A: 4x with 50% probability and 0x with 50% probability</br>
+	<input type = "radio" name = "chosen_option" value = "A" {% if previous_choice == "A" %} checked {% endif %}> Option A: 4x with 50% probability and 0x with 50% probability</br>
+	<div>
+		<img src="{% static 'information_avoidance/high_risk.png' %}"/></br>
+	</div>
 {% endif %}
 
 {% if subsession.initial_round or previous_choice == "B" %}
-	<input type = "radio" name = "chosen_option" value = "B"> Option B: 1.5x with 80% probability, 0.5x with 20% probability</br>
+	<input type = "radio" name = "chosen_option" value = "B" {% if previous_choice == "B" %} checked {% endif %}> Option B: 1.5x with 80% probability, 0.5x with 20% probability</br>
+	<div>
+		<img src="{% static 'information_avoidance/low_risk.png' %}" style = /></br>
+	</div>
 {% endif %}
 </form>
 
 </br>
 
-You may choose to invest any number of tokens in only <strong>one</strong> of the two options. The remaining tokens stay in your account and will be added to the potential winnings from this game. Recall that in the next two rounds, you will only be able to invest in the option you choose now.</br>
+<span>
+You may choose to invest any number of tokens in only <strong>one</strong> of the two options. The remaining tokens stay in your account and will be added to the potential winnings from this game. {% if Constants.rounds_per_supergame > 1 %} Recall that in the next {{ Constants.rounds_per_supergame|add:"-1" }} rounds, you will only be able to invest in the option you choose now. {% endif %} </br></br>
 
 <!-- NOTE: I don't think this slider input works with Internet Explorer 9 or previous versions -->
+
 <input type = "range" value = "1" min = "1" max = "{{Constants.tokens_per_subgame}}" step = "1" name = "investment" oninput = "change_slider()" id = "investment_slider">
 
-<input type = "number" value = "1" id = "investment_text" onchange = "change_value()" onkeydown = "return FilterInput(event)" onpaste = "handlePaste(event)">
+<input type = "number" value = "1" id = "investment_text" onchange = "change_value()" onkeydown = "return FilterInput(event)" onpaste = "handlePaste(event)" style = "max-width:40px;"> token(s)
+    
+</br></br>
+
     {% next_button %}
+</span>
 
 {% endblock %}
 
@@ -78,4 +90,16 @@ You may choose to invest any number of tokens in only <strong>one</strong> of th
 		    }
 		};
 	</script>
+{% endblock %}
+
+{% block styles %}
+
+<style type = "text/css">
+	img{
+		max-width: 250px;
+		margin-left: 80px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+</style>
 {% endblock %}

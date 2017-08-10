@@ -7,8 +7,16 @@
 
 {% block content %}
 
-You picked Option {{ player.chosen_option}}.</br>
-Another player picked Option {% if player.chosen_option == "A" %}B{% else %}A{% endif %}.</br>
+You picked Option {{ player.chosen_option }} and invested {{ player.investment }} tokens, which earned you {{ player.earned }} tokens. </br></br>
+
+{% if player.treatment == "self" or player.treatment == "no_self" %}
+If you had picked Option {{ player.info_option}}, and invested {{ player.info_investment }} tokens, you would have earned {{ player.info_earned }} tokens.
+
+{% else %}
+The other player picked Option {{ player.info_option }}, and invested {{ player.info_investment }} tokens, which earned the player {{ player.info_earned }} tokens.
+{% endif %}
+
+</br></br>
 
 
     {% next_button %}

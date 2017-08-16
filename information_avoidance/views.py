@@ -6,19 +6,19 @@ import random
 
 class Introduction(Page):
     def is_displayed(self):
-        return(self.subsession.initial_round)
+        return(self.subsession.round_number == 1)
 
 class PRA(Page):
     def is_displayed(self):
-        return(self.subsession.initial_round)
+        return(self.subsession.round_number == 1)
 
 class Instructions1(Page):
     def is_displayed(self):
-        return(self.subsession.initial_round)
+        return(self.subsession.round_number == 1)
 
 class Instructions2(Page):
     def is_displayed(self):
-        return(self.subsession.initial_round)
+        return(self.subsession.round_number == 1)
 
 class Supergame(Page):
     form_model = models.Player
@@ -67,13 +67,18 @@ class Information(Page):
     form_model = models.Player
     form_fields = ["information_shown"]
 
+    def is_displayed(self):
+        # Only give option to see information if it is the last round of the supergame
+        return(self.round_number % Constants.rounds_per_supergame == 0)
+
     def before_next_page(self):
         if (self.player.treatment == "no_self" or self.player.treatment == "no_other"):
             self.player.information_shown = True
 
 class Show_Information(Page):
     def is_displayed(self):
-        return(self.player.information_shown)
+        # Only show information if player consented, and it's the last round of the supergame
+        return(self.player.information_shown and self.round_number % Constants.rounds_per_supergame == 0)
 
 class Survey1(Page):
     def is_displayed(self):
@@ -146,10 +151,10 @@ class WaitForBets(WaitPage):
 
 
 page_sequence = [
-    # Introduction,
-    # PRA,
-    # Instructions1,
-    # Instructions2,
+    Introduction,
+    PRA,
+    Instructions1,
+    Instructions2,
     Supergame,
     Outcome,
     Information,

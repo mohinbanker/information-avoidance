@@ -55,6 +55,8 @@ You may choose to invest any number of tokens in only <strong>one</strong> of th
 			var max = document.getElementById("investment_slider").max;
 			var min = document.getElementById("investment_slider").min;
 
+			inv = Math.round(parseInt(inv));
+
 			if (inv > max){
 				inv = max;
 			}
@@ -62,7 +64,6 @@ You may choose to invest any number of tokens in only <strong>one</strong> of th
 				inv = min;
 			}
 
-			inv = Math.round(parseInt(inv));
 			inv = inv.toString();
 
 			document.getElementById("investment_text").value = inv;

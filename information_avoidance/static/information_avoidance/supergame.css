@@ -1,0 +1,21 @@
+div#otree-content{
+	font-size: 18px;
+}
+
+img{
+	max-width: 250px;
+	margin-left: 80px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+span.option{
+	display: inline-flex;
+}
+span.option_text{
+	margin-left: 5px;
+}
+input{
+	margin-right: 5px;
+	min-width: 15px;
+	min-height: 15px;
+}

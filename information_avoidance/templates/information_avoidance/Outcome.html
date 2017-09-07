@@ -11,9 +11,11 @@ Your investment did {% if player.outcome == False %}not {% endif %} pay off.</br
 
 You have invested {{player.investment}} tokens and earned <b>{{player.earned}} tokens</b> from your investment.</br>
 
-You chose not to invest <b>{{ tokens_not_invested }} tokens.</b></br>
+You chose not to invest <b>{{ tokens_not_invested }} token(s).</b></br>
 
-<b>Total tokens earned: {{player.tokens}}</b>
+<b>Tokens earned in this round: {{player.earned_total}}.</b></br>
+
+<b>Cumulative tokens earned: {{participant.payoff}}.</b></br>
 
     {% next_button %}
 

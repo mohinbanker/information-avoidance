@@ -46,7 +46,7 @@ You may choose to invest any number of tokens in only <strong>one</strong> of th
 </br></br>
 
 <p>
-	<button class="otree-next-button btn btn-large btn-primary next-button" id = "next_button" disabled>Next</button>
+	<button class="otree-next-button btn btn-large btn-primary next-button" id = "next_button" {% if previous_choice != "A" and previous_choice != "B" %}disabled {% endif %}>Next</button>
 </p>
 
 </span>

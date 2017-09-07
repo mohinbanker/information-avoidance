@@ -54,8 +54,8 @@ class Supergame(Page):
             multiplier = 0.5
 
         self.player.earned = float(self.player.investment * multiplier)
-        self.player.tokens += self.player.earned + (Constants.tokens_per_subgame - self.player.investment)
-
+        self.player.earned_total = self.player.earned + (Constants.tokens_per_subgame - self.player.investment)
+        self.player.payoff = self.player.earned_total
 
 
 

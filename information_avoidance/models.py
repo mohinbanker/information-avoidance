@@ -53,6 +53,7 @@ class Player(BasePlayer):
     tokens = models.IntegerField(initial = 0, doc = "Player's current number of tokens")
     investment = models.IntegerField(doc = "How many tokens the player chose to invest")
     earned = models.IntegerField(doc = "The payoff of the investment (gross)")
+    earned_total = models.IntegerField(doc = "The total tokens earned in the round")
     chosen_option = models.CharField(
     	initial = None,
     	choices = [["A", "Option A: 4x with 50% probability and 0x with 50% probability"],

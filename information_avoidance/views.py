@@ -26,32 +26,28 @@ class Supergame(Page):
 
     def vars_for_template(self):
         try:
-            previous_choice = self.participant.vars[str(self.round_number - 1)]
+            if (self.round_number % Constants.rounds_per_supergame != 1):
+                previous_choice = self.participant.vars[str(self.round_number - 1)]
+            else:
+                previous_choice = None
         except KeyError:
             previous_choice = None
         
-        print(self.participant.vars)
-        print(previous_choice)
-        return{"previous_choice": previous_choice}
+        lotteries = zip([round(a*100) for a in Constants.probs1], [round(b * 100) for b in Constants.probs2], Constants.outcome1, Constants.outcome2, Constants.values)
+        return{"previous_choice": previous_choice, "lotteries": list(lotteries), "numbers": range(0, len(list(lotteries)))}
 
     def before_next_page(self):
         self.participant.vars[str(self.round_number)] = self.player.chosen_option
-        if (self.player.chosen_option == "A"):
-            prob_success = 0.5
-        else:
-            prob_success = 0.8
+        idx = Constants.values.index(self.player.chosen_option)
+        prob_success = Constants.probs1[idx]
 
-        outcomes = [True] * int(prob_success*10) + [False] * int((1 - prob_success) * 10)
+        outcomes = [True] * int(prob_success*10) + [False] * int((1 - prob_success) * 10) # Relies on probabilities being multiples of 10
         self.player.outcome = random.choice(outcomes)
         multiplier = None
-        if (self.player.chosen_option == "A" and self.player.outcome == True):
-            multiplier = 4
-        elif (self.player.chosen_option == "A" and self.player.outcome == False):
-            multiplier = 0
-        elif (self.player.chosen_option == "B" and self.player.outcome == True):
-            multiplier = 1.5
-        elif (self.player.chosen_option == "B" and self.player.outcome == False):
-            multiplier = 0.5
+        if (self.player.outcome):
+            multiplier = Constants.outcome1[idx]
+        else:
+            multiplier = Constants.outcome2[idx]
 
         self.player.earned = float(self.player.investment * multiplier)
         self.player.earned_total = self.player.earned + (Constants.tokens_per_subgame - self.player.investment)
@@ -106,48 +102,57 @@ class WaitForBets(WaitPage):
             found_info = False 
 
             # If player chose to view the outcome of someone else
-            if (fixed_player.treatment == "other" or fixed_player.treatment == "no_other"):
+            # Added "True" predicate temporarily for static information outcomes
+            if (fixed_player.treatment == "other" or fixed_player.treatment == "no_other" or True ):
                 own_choice = fixed_player.chosen_option
-                players = self.subsession.get_players()
-                random.shuffle(players)
+                idx = Constants.values.index(own_choice)
+                info_idx = (idx + 1) % len(Constants.values)
+                fixed_player.info_option = Constants.values[info_idx]
+                fixed_player.info_investment = Constants.tokens_per_subgame
+                fixed_player.info_outcome = True
+                fixed_player.info_earned = float(fixed_player.info_investment * Constants.outcome1[info_idx])
+                found_info = True
 
-                for p in players:
-                    if (p.chosen_option != own_choice):
-                        fixed_player.info_option = p.chosen_option
-                        fixed_player.info_investment = p.investment
-                        fixed_player.info_outcome = p.outcome
-                        fixed_player.info_earned = p.earned
-                        found_info = True
-                        break
+                # players = self.subsession.get_players()
+                # random.shuffle(players)
+
+                # for p in players:
+                #     if (p.chosen_option != own_choice):
+                #         fixed_player.info_option = p.chosen_option
+                #         fixed_player.info_investment = p.investment
+                #         fixed_player.info_outcome = p.outcome
+                #         fixed_player.info_earned = p.earned
+                #         found_info = True
+                #         break
 
             # If player chose to view their own alternate outcome
-            if (found_info == False):
-                if (fixed_player.chosen_option == "A"):
-                    fixed_player.info_option = "B"
-                else:
-                    fixed_player.info_option = "A"
+            # if (found_info == False):
+            #     if (fixed_player.chosen_option == "A"):
+            #         fixed_player.info_option = "B"
+            #     else:
+            #         fixed_player.info_option = "A"
 
-                print(fixed_player.info_option)
-                fixed_player.info_investment = fixed_player.investment
+            #     print(fixed_player.info_option)
+            #     fixed_player.info_investment = fixed_player.investment
 
-                if (fixed_player.info_option == "A"):
-                    prob_success = 0.5
-                else:
-                    prob_success = 0.8
+            #     if (fixed_player.info_option == "A"):
+            #         prob_success = 0.5
+            #     else:
+            #         prob_success = 0.8
 
-                outcomes = [True] * int(prob_success*10) + [False] * int((1 - prob_success) * 10)
-                fixed_player.info_outcome = random.choice(outcomes)
-                multiplier = 0
-                if (fixed_player.info_option == "A" and fixed_player.info_outcome == True):
-                    multiplier = 4
-                elif (fixed_player.info_option == "A" and fixed_player.info_outcome == False):
-                    multiplier = 0
-                elif (fixed_player.info_option == "B" and fixed_player.info_outcome == True):
-                    multiplier = 1.5
-                elif (fixed_player.info_option == "B" and fixed_player.info_outcome == False):
-                    multiplier = 0.5
+            #     outcomes = [True] * int(prob_success*10) + [False] * int((1 - prob_success) * 10)
+            #     fixed_player.info_outcome = random.choice(outcomes)
+            #     multiplier = 0
+            #     if (fixed_player.info_option == "A" and fixed_player.info_outcome == True):
+            #         multiplier = 4
+            #     elif (fixed_player.info_option == "A" and fixed_player.info_outcome == False):
+            #         multiplier = 0
+            #     elif (fixed_player.info_option == "B" and fixed_player.info_outcome == True):
+            #         multiplier = 1.5
+            #     elif (fixed_player.info_option == "B" and fixed_player.info_outcome == False):
+            #         multiplier = 0.5
 
-                fixed_player.info_earned = float(fixed_player.info_investment * multiplier)
+            #     fixed_player.info_earned = float(fixed_player.info_investment * multiplier)
 
 
 page_sequence = [

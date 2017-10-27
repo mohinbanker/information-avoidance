@@ -21,6 +21,12 @@ class Constants(BaseConstants):
     name_in_url = 'information_avoidance'
     players_per_group = None
 
+    probs1 = [0.5, 0.8, 0.9]
+    probs2 = [1 - x for x in probs1]
+    outcome1 = [4, 1.5, 1.3]
+    outcome2 = [0, 0.5, 0.8]
+    values = ["A", "B", "C"]
+
 class Subsession(BaseSubsession):
     initial_round = models.BooleanField(doc = "True iff current round is the first round of a supergame")
     
@@ -56,16 +62,14 @@ class Player(BasePlayer):
     earned_total = models.IntegerField(doc = "The total tokens earned in the round")
     chosen_option = models.CharField(
     	initial = None,
-    	choices = [["A", "Option A: 4x with 50% probability and 0x with 50% probability"],
-    			   ["B", "Option B: 1.5x with 80% probability and 0.5x with 20% probability"]],
+    	choices = Constants.values,
     	blank = False,
     	widget = widgets.RadioSelect(),
         doc = "The lottery game chosen by the player in this round")
     
     previous_option = models.CharField(
     	initial = None,
-    	choices = [["A", "Option A: 4x with 50% probability and 0x with 50% probability"],
-    			   ["B", "Option B: 1.5x with 80% probability and 0.5x with 20% probability"]],
+    	choices = Constants.values,
     	blank = False,
     	widget = widgets.RadioSelect(),
         doc = "The lottery game chosen by the player in the previous round")

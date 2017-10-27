@@ -10,25 +10,19 @@
 Available tokens to invest: {{Constants.tokens_per_subgame}}</br></br>
 
 <form required>
-	<table border = "0" cellpadding = "10px"><tr>
-		{% if subsession.initial_round or previous_choice == "A" %}
-		<td width = "50%">
-			<span class = "option"><input type = "radio" name = "chosen_option" value = "A" {% if previous_choice == "A" %} checked {% else %} onclick = "enableButton()" {% endif %}> <span class = "option_text">Option A: 4x with 50% probability and 0x with 50% probability</span></span></br>
-			<div>
+	<table border = "0" cellpadding = "10px">
+		{% for lottery in lotteries %}
+		{% if subsession.initial_round or previous_choice == lottery.4 %}
+		<tr>
+		<td>
+			<span class = "option"><input type = "radio" name = "chosen_option" value = {{lottery.4}} {% if previous_choice == lottery.4 %} checked {% else %} onclick = "enableButton()" {% endif %}> <span class = "option_text">Option {{lottery.4}}: {{lottery.2}}x with {{lottery.0}}% probability and {{lottery.3}}x with {{lottery.1}}% probability</span></span></br>
+<!-- 			<div>
 				<img src="{% static 'information_avoidance/high_risk.png' %}"/>
-			</div>
-		</th>
+			</div> -->
+		</td>
+		</tr>
 		{% endif %}
-
-	{% if subsession.initial_round or previous_choice == "B" %}
-	<td width = "50%">
-		<span class = "option"><input type = "radio" name = "chosen_option" value = "B" {% if previous_choice == "B" %} checked {% else %} onclick = "enableButton()" {% endif %}> <span class = "option_text">Option B: 1.5x with 80% probability, 0.5x with 20% probability</span></span></br>
-		<div>
-			<img src="{% static 'information_avoidance/low_risk.png' %}" style = /></br>
-		</div>
-	</td>
-	{% endif %}
-</tr>
+		{% endfor %}
 </table>
 </form>
 
@@ -46,7 +40,7 @@ You may choose to invest any number of tokens in only <strong>one</strong> of th
 </br></br>
 
 <p>
-	<button class="otree-next-button btn btn-large btn-primary next-button" id = "next_button" {% if previous_choice != "A" and previous_choice != "B" %}disabled {% endif %}>Next</button>
+	<button class="otree-next-button btn btn-large btn-primary next-button" id = "next_button" {% if previous_choice == None %}disabled {% endif %}>Next</button>
 </p>
 
 </span>

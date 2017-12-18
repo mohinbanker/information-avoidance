@@ -11,11 +11,12 @@ Available tokens to invest: {{Constants.tokens_per_subgame}}</br></br>
 
 <form required>
 	<table border = "0" cellpadding = "10px">
-		{% for lottery in lotteries %}
-		{% if subsession.initial_round or previous_choice == lottery.4 %}
+		{% for value in Constants.values %}
+		{% if subsession.initial_round or previous_choice == value %}
 		<tr>
 		<td>
-			<span class = "option"><input type = "radio" name = "chosen_option" value = {{lottery.4}} {% if previous_choice == lottery.4 %} checked {% else %} onclick = "enableButton()" {% endif %}> <span class = "option_text">Option {{lottery.4}}: {{lottery.2}}x with {{lottery.0}}% probability and {{lottery.3}}x with {{lottery.1}}% probability</span></span></br>
+			<span class = "option"><input type = "radio" name = "chosen_option" value = {{value}} {% if previous_choice == value %} checked {% else %} onclick = "enableButton()" {% endif %}> <span class = "option_text">Option {{value}}
+				<!-- :  {{lottery.2}}x with {{lottery.0}}% probability and {{lottery.3}}x with {{lottery.1}}% probability --></span></span></br>
 <!-- 			<div>
 				<img src="{% static 'information_avoidance/high_risk.png' %}"/>
 			</div> -->

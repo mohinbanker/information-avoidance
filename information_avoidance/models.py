@@ -14,17 +14,19 @@ Your app description
 class Constants(BaseConstants):
     rounds_per_supergame = 3
     num_supergames = 4
-    treatments = ["self", "no_self", "other", "no_other"]
+    treatments = ["none", "optional", "mandatory"]
 
     tokens_per_subgame = int(30/rounds_per_supergame)
     num_rounds = num_supergames * rounds_per_supergame
     name_in_url = 'information_avoidance'
     players_per_group = None
 
-    probs1 = [0.5, 0.8, 0.9]
-    probs2 = [1 - x for x in probs1]
-    outcome1 = [4, 1.5, 1.3]
-    outcome2 = [0, 0.5, 0.8]
+    probsA = [1.0/21 + 0.004*(10-i) for i in range(0, 21)]
+    probsB = [1.0/21 for i in range(0, 21)]
+    probsC = [1.0/21 + 0.004*(i-10)for i in range(0, 21)]
+
+    multipliers = list(range(0,21))
+
     values = ["A", "B", "C"]
 
 class Subsession(BaseSubsession):

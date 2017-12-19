@@ -7,7 +7,11 @@
 
 {% block content %}
 
+You may choose to invest any number of tokens in only <b>one</b> of the available options. The remaining tokens stay in your account and will be added to the potential winnings from this game.</br></br>
+
 Available tokens to invest: {{Constants.tokens_per_subgame}}</br></br>
+
+Which option do you want to pick?
 
 <form required>
 	<table border = "0" cellpadding = "10px">
@@ -30,7 +34,8 @@ Available tokens to invest: {{Constants.tokens_per_subgame}}</br></br>
 </br>
 
 <span>
-You may choose to invest any number of tokens in only <strong>one</strong> of the two options. The remaining tokens stay in your account and will be added to the potential winnings from this game. {% if Constants.rounds_per_supergame > 1 %} Recall that in the next {{ Constants.rounds_per_supergame|add:"-1" }} rounds, you will only be able to invest in the option you choose now. {% endif %} </br></br>
+	Now, how much do you want to invest?</br></br>
+</span>
 
 <!-- NOTE: I don't think this slider input works with Internet Explorer 9 or previous versions -->
 
@@ -44,7 +49,7 @@ You may choose to invest any number of tokens in only <strong>one</strong> of th
 	<button class="otree-next-button btn btn-large btn-primary next-button" id = "next_button" {% if previous_choice == None %}disabled {% endif %}>Next</button>
 </p>
 
-</span>
+
 
 {% endblock %}
 

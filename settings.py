@@ -111,8 +111,9 @@ SESSION_CONFIGS = [
     {
         'name': 'information_avoidance',
         'display_name': 'Information Avoidance',
-        'num_demo_participants': 4,
+        'num_demo_participants': 6,
         'app_sequence': ['information_avoidance'],
+        'ROUNDS_PER_SUPERGAME': "3",
     }
 ]
 

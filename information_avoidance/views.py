@@ -40,30 +40,33 @@ class Supergame(Page):
     def before_next_page(self):
         self.participant.vars[str(self.round_number)] = self.player.chosen_option
 
-        multiplier = None
+        self.player.multiplier = None
         if (self.player.chosen_option == "A"):
-            multiplier = numpy.random.choice(Constants.multipliers, 1, p = Constants.probsA)
+            self.player.multiplier = numpy.random.choice(Constants.multipliers, 1, p = Constants.probsA)
         elif (self.player.chosen_option == "B"):
-            multiplier = numpy.random.choice(Constants.multipliers, 1, p = Constants.probsB)
+            self.player.multiplier = numpy.random.choice(Constants.multipliers, 1, p = Constants.probsB)
         elif (self.player.chosen_option == "C"):
-            multiplier = numpy.random.choice(Constants.multipliers, 1, p = Constants.probsC)
+            self.player.multiplier = numpy.random.choice(Constants.multipliers, 1, p = Constants.probsC)
 
-        print(multiplier)
-        multiplier = multiplier/10.0
+        print(self.player.multiplier)
+        self.player.multiplier = self.player.multiplier/10.0
         # idx = Constants.values.index(self.player.chosen_option)
         # prob_success = Constants.probs1[idx]
 
         # outcomes = [True] * int(prob_success*10) + [False] * int((1 - prob_success) * 10) # Relies on probabilities being multiples of 10
         # self.player.outcome = random.choice(outcomes)
-        # multiplier = None
+        # self.player.multiplier = None
         # if (self.player.outcome):
-        #     multiplier = Constants.outcome1[idx]
+        #     self.player.multiplier = Constants.outcome1[idx]
         # else:
-        #     multiplier = Constants.outcome2[idx]
+        #     self.player.multiplier = Constants.outcome2[idx]
 
-        self.player.earned = float(self.player.investment * multiplier)
+        self.player.earned = float(self.player.investment * self.player.multiplier)
+        self.player.investment_return = self.player.earned - self.player.investment
         self.player.earned_total = self.player.earned + (Constants.tokens_per_subgame - self.player.investment)
+        self.player.previous_payoff = self.participant.payoff
         self.player.payoff = self.player.earned_total
+        self.player.not_invested = Constants.tokens_per_subgame - self.player.investment
 
 
 
@@ -71,13 +74,11 @@ class Outcome(Page):
     def vars_for_template(self):
         return{"tokens_not_invested": Constants.tokens_per_subgame - self.player.investment}
 
-class Information(Page):
-    form_model = models.Player
-    form_fields = ["information_shown"]
 
+class Information(Page):
     def is_displayed(self):
         # Only give option to see information if it is the last round of the supergame
-        return((self.round_number % Constants.rounds_per_supergame == 0) or self.player.treatment == "optional")
+        return((self.round_number % Constants.rounds_per_supergame == 0) and self.player.treatment != "none")
 
     # def before_next_page(self):
     #     if (self.player.treatment == "mandatory"):
@@ -98,6 +99,49 @@ class Information(Page):
     #         self.player.earned = float(self.player.investment * multiplier)
     #         self.player.earned_total = self.player.earned + (Constants.tokens_per_subgame - self.player.investment)
     #         self.player.payoff = self.player.earned_total
+    def before_next_page(self):
+        if (self.player.treatment == "mandatory"):
+            self.player.info_option = random.choice(["A", "B", "C"])
+            self.player.information_shown = True
+            self.player.info_multiplier = None
+            self.player.info_investment = random.randint(1, Constants.tokens_per_subgame)
+            if (self.player.info_option == "A"):
+                self.player.info_multiplier = numpy.random.choice(Constants.multipliers, 1, p = Constants.probsA)
+            elif (self.player.info_option == "B"):
+                self.player.info_multiplier = numpy.random.choice(Constants.multipliers, 1, p = Constants.probsB)
+            elif (self.player.info_option == "C"):
+                self.player.info_multiplier = numpy.random.choice(Constants.multipliers, 1, p = Constants.probsC)
+
+            self.player.info_multiplier = self.player.info_multiplier/10.0            
+
+            self.player.info_earned = float(self.player.info_investment * self.player.info_multiplier)
+            self.player.info_investment_return = self.player.info_earned - self.player.info_investment
+            self.player.info_earned_total = self.player.info_earned + (Constants.tokens_per_subgame - self.player.info_investment)
+
+class InformationChoice(Page):
+    form_model = models.Player
+    form_fields = ["info_option"]
+    def is_displayed(self):
+        # Only give option to see information if it is the last round of the supergame
+        return((self.round_number % Constants.rounds_per_supergame == 0) and self.player.treatment == "optional")
+
+    def before_next_page(self):
+        self.player.information_shown = (self.player.info_option != None) and (self.player.info_option != "skip_info")
+        if (self.player.info_option != None and self.player.info_option != "skip_info"):
+            self.player.info_multiplier = None
+            self.player.info_investment = random.randint(1, Constants.tokens_per_subgame)
+            if (self.player.info_option == "A"):
+                self.player.info_multiplier = numpy.random.choice(Constants.multipliers, 1, p = Constants.probsA)
+            elif (self.player.info_option == "B"):
+                self.player.info_multiplier = numpy.random.choice(Constants.multipliers, 1, p = Constants.probsB)
+            elif (self.player.info_option == "C"):
+                self.player.info_multiplier = numpy.random.choice(Constants.multipliers, 1, p = Constants.probsC)
+
+            self.player.info_multiplier = self.player.info_multiplier/10.0            
+
+            self.player.info_earned = float(self.player.info_investment * self.player.info_multiplier)
+            self.player.info_investment_return = self.player.info_earned - self.player.info_investment
+            self.player.info_earned_total = self.player.info_earned + (Constants.tokens_per_subgame - self.player.info_investment)
 
 
 class Show_Information(Page):
@@ -105,27 +149,10 @@ class Show_Information(Page):
         # Only show information if player consented, and it's the last round of the supergame
         return(self.player.information_shown and self.round_number % Constants.rounds_per_supergame == 0)
 
-class Survey1(Page):
-    def is_displayed(self):
-        return(self.player.round_number == Constants.num_rounds)
-
-class Survey2(Page):
-    def is_displayed(self):
-        return(self.player.round_number == Constants.num_rounds)
-
-class Survey3(Page):
-    def is_displayed(self):
-        return(self.player.round_number == Constants.num_rounds)
-
-class Survey4(Page):
-    def is_displayed(self):
-        return(self.player.round_number == Constants.num_rounds)
-
 class WaitForBets(WaitPage):
-    wait_for_all_groups = True
+    wait_for_all_groups = False
 
-    def after_all_players_arrive(self):
-        pass
+    #def after_all_players_arrive(self):
         # for fixed_player in self.subsession.get_players():
             # Boolean to keep track if player has set their information variables
             # found_info = False 
@@ -183,19 +210,106 @@ class WaitForBets(WaitPage):
 
             #     fixed_player.info_earned = float(fixed_player.info_investment * multiplier)
 
+class InfoAvoidance1(Page):
+    form_model = models.Player
+    form_fields = ["infoavoidance1"]
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
+
+class InfoAvoidance2(Page):
+    form_model = models.Player
+    form_fields = ["infoavoidance2"]
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
+
+class InfoAvoidance3(Page):
+    form_model = models.Player
+    form_fields = ["infoavoidance3"]
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
+
+class InfoAvoidance4(Page):
+    form_model = models.Player
+    form_fields = ["infoavoidance4"]
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
+
+class InfoAvoidance5(Page):
+    form_model = models.Player
+    form_fields = ["infoavoidance5"]
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
+
+class InfoAvoidance6(Page):
+    form_model = models.Player
+    form_fields = ["infoavoidance6"]
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
+
+class InfoAvoidance7(Page):
+    form_model = models.Player
+    form_fields = ["infoavoidance7"]
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
+
+class InfoAvoidance8(Page):
+    form_model = models.Player
+    form_fields = ["infoavoidance8"]
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
+
+class InfoAvoidance9(Page):
+    form_model = models.Player
+    form_fields = ["infoavoidance9"]
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
+
+class InfoAvoidance10(Page):
+    form_model = models.Player
+    form_fields = ["infoavoidance10"]
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
+
+class InfoAvoidance11(Page):
+    form_model = models.Player
+    form_fields = ["infoavoidance11"]
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
+
+class InfoAvoidance12(Page):
+    form_model = models.Player
+    form_fields = ["infoavoidance12"]
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
+
+class InfoAvoidance13(Page):
+    form_model = models.Player
+    form_fields = ["infoavoidance13"]
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
 
 page_sequence = [
-    Introduction,
-    PRA,
-    Instructions1,
-    Instructions2,
+    # Introduction,
+    # PRA,
+    # Instructions1,
+    # Instructions2,
     Supergame,
     Outcome,
     Information,
+    InformationChoice,
     #WaitForBets,
     Show_Information,
-    Survey1,
-    Survey2,
-    Survey3,
-    Survey4
+    InfoAvoidance1,
+    InfoAvoidance2,
+    InfoAvoidance3,
+    InfoAvoidance4,
+    InfoAvoidance5,
+    InfoAvoidance6,
+    InfoAvoidance7,
+    InfoAvoidance8,
+    InfoAvoidance9,
+    InfoAvoidance10,
+    InfoAvoidance11,
+    InfoAvoidance12,
+    InfoAvoidance13
 ]

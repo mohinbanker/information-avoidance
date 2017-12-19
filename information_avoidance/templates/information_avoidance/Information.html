@@ -9,13 +9,13 @@
 
 <!-- Self Avoidance Option -->
 {% if player.treatment == "mandatory" %}
-In this round, you have chosen to invest a total of {{player.investment}} tokens in Option {{player.chosen_option}}. On the next screen, you will see information about other participants' investments. The outcomes of those participants were not affected by your choices.</br></br>
+In this round, you have chosen to invest a total of {{total_investment}} tokens in Option {{player.chosen_option}}. On the next screen, you will see information about other participants' investments. The outcomes of those participants were not affected by your choices.</br></br>
 
 {% endif %}
 
 <!-- Self No Avoidance Option -->
 {% if player.treatment == "optional" %}
-In this round, you have chosen to invest a total of {{player.investment}} tokens in Option {{player.chosen_option}}. On the next screen, you have the option to see information about other participants’ investments.</br></br>
+In this round, you have chosen to invest a total of {{total_investment}} tokens in Option {{player.chosen_option}}. On the next screen, you have the option to see information about other participants’ investments.</br></br>
 
 The outcomes of those participants were not affected by your choices.</br></br>
 

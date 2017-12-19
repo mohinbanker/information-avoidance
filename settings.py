@@ -109,11 +109,18 @@ SESSION_CONFIG_DEFAULTS = {
 
 SESSION_CONFIGS = [
     {
-        'name': 'information_avoidance',
-        'display_name': 'Information Avoidance',
+        'name': 'information_avoidance_repeated',
+        'display_name': 'Information Avoidance Repeated Round',
         'num_demo_participants': 3,
         'app_sequence': ['information_avoidance'],
-        'ROUNDS_PER_SUPERGAME': "3",
+        'rounds_in_supergame': "3",
+    },
+    {
+        'name': 'information_avoidance_single',
+        'display_name': 'Information Avoidance Single Round',
+        'num_demo_participants': 3,
+        'app_sequence': ['information_avoidance'],
+        'rounds_in_supergame': "1",
     }
 ]
 

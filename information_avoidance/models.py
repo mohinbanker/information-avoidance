@@ -2,6 +2,7 @@ from otree.api import (
     models, widgets, BaseConstants, BaseSubsession, BaseGroup, BasePlayer,
     Currency as c, currency_range
 )
+import numpy.random
 
 
 author = 'Mohin Banker'
@@ -16,8 +17,7 @@ class Constants(BaseConstants):
     num_supergames = 4
     treatments = ["none", "optional", "mandatory"]
 
-    tokens_per_supergame = 30
-    tokens_per_subgame = round(tokens_per_supergame/rounds_per_supergame)
+    tokens_per_supergame = 30.0
     num_rounds = num_supergames * rounds_per_supergame
     name_in_url = 'information_avoidance'
     players_per_group = None
@@ -32,16 +32,33 @@ class Constants(BaseConstants):
 
 class Subsession(BaseSubsession):
     initial_round = models.BooleanField(doc = "True iff current round is the first round of a supergame")
-    
+    subgames = models.IntegerField(doc = "The number of rounds per supergame shown to the player")
+    show_round = models.BooleanField(doc = "True iff participant is shown the round of the game. Otherwise, the round is skipped for fewer subgames.")
+    tokens_per_subgame = models.IntegerField(doc = "Number of tokens endowed at each subgame")
+
     def before_session_starts(self):
         self.initial_round = ((self.round_number - 1) % Constants.rounds_per_supergame) == 0
+        self.subgames = int(self.session.config["rounds_in_supergame"])
+        self.show_round = ((self.round_number-1) % Constants.rounds_per_supergame) < self.subgames
+        self.tokens_per_subgame = round(Constants.tokens_per_supergame/self.subgames)
 
         # Equally distribute treatments among players
         for i in range(len(self.get_players())):
             p = self.get_players()[i]
             p.treatment = Constants.treatments[i % len(Constants.treatments)]
 
+    # Takes in gamble choice and return multiplier
+    def sim_gamble(self, choice):
+        multiplier = 0
+        if (choice == "A"):
+            multiplier = numpy.random.choice(Constants.multipliers, 1, p = Constants.probsA)
+        elif (choice == "B"):
+            multiplier = numpy.random.choice(Constants.multipliers, 1, p = Constants.probsB)
+        elif (choice == "C"):
+            multiplier = numpy.random.choice(Constants.multipliers, 1, p = Constants.probsC)
 
+        multiplier = multiplier.item()
+        return(multiplier/10.0)
 
 
 
@@ -63,7 +80,7 @@ class Player(BasePlayer):
     not_invested = models.IntegerField(doc = "Number of tokens not invested")
     investment_return = models.IntegerField(doc = "Net profit from player's investment")
     earned = models.IntegerField(doc = "The payoff of the investment (gross)")
-    earned_total = models.IntegerField(doc = "The total tokens earned in the round")
+    revenue = models.IntegerField(doc = "Sum of earned tokens and non-invested tokens")
     previous_payoff = models.IntegerField(doc = "Total tokens earned before the current round")
     multiplier = models.FloatField(doc = "Multiplier used for investment outcome")
     chosen_option = models.CharField(
@@ -85,8 +102,10 @@ class Player(BasePlayer):
     info_not_invested = models.IntegerField(doc = "Number of tokens not invested")
     info_investment_return = models.IntegerField(initial = None, doc = "Net profit from information investment")
     info_earned = models.IntegerField(initial = None, doc = "Sum of investment and investment return")
-    info_earned_total = models.IntegerField(initial = None, doc = "Total tokens earned in this round (including tokens not invested)")
+    info_earned_total = models.IntegerField(initial = None, doc = "Total tokens earned in this round")
     info_multiplier = models.FloatField(doc = "Multiplier used for investment in information scenario")
+    info_total_invested = models.IntegerField(doc = "Sum of investments across gambles in simulated information")
+    info_revenue = models.IntegerField(doc = "Sum of earned tokens and non-invested tokens")
 
     infoavoidance1 = models.PositiveIntegerField(
         initial = None,

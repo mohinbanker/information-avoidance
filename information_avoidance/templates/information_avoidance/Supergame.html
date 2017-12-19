@@ -2,14 +2,14 @@
 {% load staticfiles otree_tags %}
 
 {% block title %}
-    Round {{subsession.round_number}}{% if Constants.rounds_per_supergame > 1 %}, Part {{part}} {% endif %}
+    Round {{subsession.round_number}}{% if subsession.subgames > 1 %}, Part {{part}} {% endif %}
 {% endblock %}
 
 {% block content %}
 
 You may choose to invest any number of tokens in only <b>one</b> of the available options. The remaining tokens stay in your account and will be added to the potential winnings from this game.</br></br>
 
-Available tokens to invest: {{Constants.tokens_per_subgame}}</br></br>
+Available tokens to invest: {{subsession.tokens_per_subgame}}</br></br>
 
 Which option do you want to pick?
 
@@ -39,7 +39,7 @@ Which option do you want to pick?
 
 <!-- NOTE: I don't think this slider input works with Internet Explorer 9 or previous versions -->
 
-<input type = "range" value = "1" min = "1" max = "{{Constants.tokens_per_subgame}}" step = "1" name = "investment" oninput = "change_slider()" id = "investment_slider">
+<input type = "range" value = "1" min = "1" max = "{{subsession.tokens_per_subgame}}" step = "1" name = "investment" oninput = "change_slider()" id = "investment_slider">
 
 <input type = "number" value = "1" id = "investment_text" onchange = "change_value()" onkeydown = "return FilterInput(event)" onpaste = "handlePaste(event)" style = "max-width:40px;"> tokens invested
     

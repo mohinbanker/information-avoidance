@@ -13,7 +13,7 @@ You invested {{player.investment}} token{{player.investment|pluralize}}. Your in
 
 You did not invest <b>{{ player.not_invested }} token{{tokens_not_invested|pluralize}}</b>, and they were returned to you.</br>
 
-You are left with: {{player.previous_payoff}} + {{player.earned_total}} = <b>{{participant.payoff}}</b>.</br></br>
+You are left with: {{player.earned}} + {{player.not_invested}} = <b>{{player.revenue}} token{{player.revenue|pluralize}}</b>.</br></br>
 
     {% next_button %}
 

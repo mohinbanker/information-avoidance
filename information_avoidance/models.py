@@ -14,7 +14,7 @@ This is an oTree implementation of a lab experiment investigating financial impa
 
 class Constants(BaseConstants):
     rounds_per_supergame = 3
-    num_supergames = 4
+    num_supergames = 1
     treatments = ["none", "optional", "mandatory"]
 
     tokens_per_supergame = 30.0

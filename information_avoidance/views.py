@@ -19,7 +19,7 @@ class Instructions1(Page):
 
 class Instructions2(Page):
     def is_displayed(self):
-        return(self.subsession.round_number == 1)
+        return(self.subsession.round_number == 1 or self.subsession.round_number == (Constants.rounds_per_supergame + 1))
 
 class Supergame(Page):
     form_model = models.Player
@@ -34,8 +34,14 @@ class Supergame(Page):
         except KeyError:
             previous_choice = None
         
+        part = self.round_number % Constants.rounds_per_supergame
+        if (part == 0):
+            part = Constants.rounds_per_supergame
+
+        first_round = ((self.round_number % Constants.rounds_per_supergame) == 1)
+
         #lotteries = zip([round(a*100) for a in Constants.probs1], [round(b * 100) for b in Constants.probs2], Constants.outcome1, Constants.outcome2, Constants.values)
-        return{"previous_choice": previous_choice}
+        return{"previous_choice": previous_choice, "part": part, "first_round": first_round}
 
     def before_next_page(self):
         self.participant.vars[str(self.round_number)] = self.player.chosen_option
@@ -61,7 +67,7 @@ class Supergame(Page):
         # else:
         #     self.player.multiplier = Constants.outcome2[idx]
 
-        self.player.earned = float(self.player.investment * self.player.multiplier)
+        self.player.earned = round(float(self.player.investment * self.player.multiplier))
         self.player.investment_return = self.player.earned - self.player.investment
         self.player.earned_total = self.player.earned + (Constants.tokens_per_subgame - self.player.investment)
         self.player.previous_payoff = self.participant.payoff
@@ -288,11 +294,33 @@ class InfoAvoidance13(Page):
     def is_displayed(self):
         return(self.player.round_number == Constants.num_rounds)
 
+class RiskPreferences(Page):
+    form_model = models.Player
+    form_fields = ["riskpreferences1"]
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
+
+class Courses(Page):
+    form_model = models.Player
+    form_fields = ["econ_exp", "marketing_exp", "law_exp"]
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
+
+class Demographics(Page):
+    form_model = models.Player
+    form_fields = ["is_male", "english", "age"]
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
+
+class End(Page):
+    def is_displayed(self):
+        return(self.player.round_number == Constants.num_rounds)
+
 page_sequence = [
-    # Introduction,
-    # PRA,
-    # Instructions1,
-    # Instructions2,
+    Introduction,
+    PRA,
+    Instructions1,
+    Instructions2,
     Supergame,
     Outcome,
     Information,
@@ -311,5 +339,9 @@ page_sequence = [
     InfoAvoidance10,
     InfoAvoidance11,
     InfoAvoidance12,
-    InfoAvoidance13
+    InfoAvoidance13,
+    RiskPreferences,
+    Courses,
+    Demographics,
+    End
 ]

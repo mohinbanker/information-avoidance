@@ -1,0 +1,33 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Survey
+{% endblock %}
+
+{% block content %}
+
+<p>Imagine that you are offered the opportunity to invest up to $10 in the following lottery:</p>
+ 
+<p>With a chance of 1/6 (16%) the lottery will “succeed” and you will make 7 times the amount you invested. With a chance of 5/6 (84%) the lottery will “fail” and you will lose the money you invested.</p>
+ 
+<p>You can imagine this as follows: after choosing how much you want to invest, you could roll a die and if the number 6 comes up, you receive 7 times the amount you have invested. If any of the numbers 1-5 come up, you would lose the amount you have invested. Whatever money you choose not to invest would be yours to keep.</p>
+
+
+<p>Example: if you invest $1 and the lottery succeeds, you would receive $16 (7x $1 + $9 that you did not invest). If the lottery fails, you would receive $9 (the amount you did not invest).</p>
+
+
+<p>Example: if you invest $9 and the lottery succeeds, you would receive $64 (7x $9 + $1). If the lottery fails, you would receive $1.</p>
+
+I would invest (in dollars): <input type = "number" min = "1" max = "10" step = "1" name = "riskpreferences1" id = "risk_input">
+
+
+</br></br>
+
+    {% next_button %}
+
+{% endblock %}
+
+{% block styles %}
+<link href="{% static "information_avoidance/supergame.css" %}" rel = "stylesheet">
+{% endblock %}

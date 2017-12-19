@@ -7,6 +7,10 @@
 
 {% block content %}
 
+{% if subsession.round_number != 1 %}
+You will now start a new round.  The instructions for the game are the same.</br></br>
+{% endif %}
+
 {% if Constants.rounds_per_supergame == 1 %}
 You will receive 30 tokens that you can invest in one of three options.  Your earnings for the round will be decided by this investment.
 
@@ -22,6 +26,8 @@ At the end of the round, you will see information on the investment choices of a
 {% if player.treatment == "optional" %}
 At the end of the round, you will have the chance to see information on the investment choices of another player, including which option they chose, how much they invested, and how much they earned.
 {% endif %}
+
+</br></br>
 
     {% next_button %}
 

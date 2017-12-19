@@ -2,18 +2,18 @@
 {% load staticfiles otree_tags %}
 
 {% block title %}
-    Results
+    Outcome
 {% endblock %}
 
 {% block content %}
 
 <!-- Your investment did {% if player.outcome == False %}not {% endif %} pay off.</br>-->
 
-You invested {{player.investment}} token{{player.investment|pluralize}}. Your investment return was <b>{{player.investment_return}} token{{player.investment_return|pluralize}}</b>, so you received {{player.earned}} token{{player.earned|pluralize}}.</br>
+You invested {{player.investment}} token{{player.investment|pluralize}}. Your investment return was {{player.investment_return}} token{{player.investment_return|pluralize}}, so you received <b>{{player.earned}} token{{player.earned|pluralize}}</b>.</br>
 
 You did not invest <b>{{ player.not_invested }} token{{tokens_not_invested|pluralize}}</b>, and they were returned to you.</br>
 
-You are left with: {{player.previous_payoff}} + {{player.earned_total}} = {{participant.payoff}}.</br>
+You are left with: {{player.previous_payoff}} + {{player.earned_total}} = <b>{{participant.payoff}}</b>.</br></br>
 
     {% next_button %}
 

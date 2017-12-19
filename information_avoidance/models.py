@@ -12,11 +12,12 @@ This is an oTree implementation of a lab experiment investigating financial impa
 
 
 class Constants(BaseConstants):
-    rounds_per_supergame = 1
-    num_supergames = 1
+    rounds_per_supergame = 3
+    num_supergames = 4
     treatments = ["none", "optional", "mandatory"]
 
-    tokens_per_subgame = int(30/rounds_per_supergame)
+    tokens_per_supergame = 30
+    tokens_per_subgame = round(tokens_per_supergame/rounds_per_supergame)
     num_rounds = num_supergames * rounds_per_supergame
     name_in_url = 'information_avoidance'
     players_per_group = None
@@ -163,5 +164,32 @@ class Player(BasePlayer):
         initial = None,
         blank = True,
         choices = [[4,"Strongly disagree"], [3, "Somewhat disagree"], [2, "Somewhat agree"], [4, "Strongly agree"]],
-        verbose_name = "If people know bad things about my life that I don't know, I would prefer not to be told",
+        verbose_name = "If people know bad things about my life that I don't know, I would prefer not to be told.",
         widget = widgets.RadioSelect())
+
+    riskpreferences1 = models.PositiveIntegerField(
+        initial = None,
+        blank = True)
+
+    econ_exp = models.BooleanField(initial = None, blank = True)
+    marketing_exp = models.BooleanField(initial = None, blank = True)
+    law_exp = models.BooleanField(initial = None, blank = True)
+
+    is_male = models.BooleanField(
+        initial = None, 
+        blank = True,
+        verbose_name = "What is your gender?",
+        choices = [[True, "Male"], [False, "Female"]])
+    english = models.CharField(
+        initial = None, 
+        blank = True,
+        verbose_name = "Is English your primary language",
+        choices = ["Yes", "No", "Prefer not to answer"],
+        widget = widgets.RadioSelect())
+    age = models.PositiveIntegerField(
+        initial = None, 
+        blank = True,
+        verbose_name = "How old are you?",
+        widget = widgets.SliderInput(attrs={'step':1}, show_value = False),
+        min = 18,
+        max = 100)

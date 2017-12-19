@@ -2,7 +2,7 @@
 {% load staticfiles otree_tags %}
 
 {% block title %}
-    Round {{subsession.round_number}}
+    Round {{subsession.round_number}}{% if Constants.rounds_per_supergame > 1 %}, Part {{part}} {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -19,7 +19,7 @@ Which option do you want to pick?
 		{% if subsession.initial_round or previous_choice == value %}
 		<tr>
 		<td>
-			<span class = "option"><input type = "radio" name = "chosen_option" value = {{value}} {% if previous_choice == value %} checked {% else %} onclick = "enableButton()" {% endif %}> <span class = "option_text">Option {{value}}
+			<span class = "option"><input type = "radio" name = "chosen_option" value = {{value}} {% if previous_choice == value and first_round != True %} checked {% else %} onclick = "enableButton()" {% endif %}> <span class = "option_text">Option {{value}}
 				<!-- :  {{lottery.2}}x with {{lottery.0}}% probability and {{lottery.3}}x with {{lottery.1}}% probability --></span></span></br>
 <!-- 			<div>
 				<img src="{% static 'information_avoidance/high_risk.png' %}"/>
@@ -41,7 +41,7 @@ Which option do you want to pick?
 
 <input type = "range" value = "1" min = "1" max = "{{Constants.tokens_per_subgame}}" step = "1" name = "investment" oninput = "change_slider()" id = "investment_slider">
 
-<input type = "number" value = "1" id = "investment_text" onchange = "change_value()" onkeydown = "return FilterInput(event)" onpaste = "handlePaste(event)" style = "max-width:40px;"> token(s)
+<input type = "number" value = "1" id = "investment_text" onchange = "change_value()" onkeydown = "return FilterInput(event)" onpaste = "handlePaste(event)" style = "max-width:40px;"> tokens invested
     
 </br></br>
 

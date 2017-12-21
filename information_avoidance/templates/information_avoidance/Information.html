@@ -8,49 +8,22 @@
 {% block content %}
 
 <!-- Self Avoidance Option -->
-{% if player.treatment == "self" %}
-In this round, you have chosen to invest a total of {{player.investment}} tokens in Option {{player.chosen_option}}. You now have the option to find out how much you could have earned if you had instead invested {{player.investment}} tokens in Option {% if player.chosen_option == "A" %}B{% else %}A{% endif %}. Recall that the outcomes of these two options are independent, so if the investment did not pay off with one option, it could still have paid off with the other option.</br></br>
+{% if player.treatment == "mandatory" %}
+In this round, you have chosen to invest a total of {{total_investment}} tokens in Option {{player.chosen_option}}. On the next screen, you will see information about other participants' investments. The outcomes of those participants were not affected by your choices.</br></br>
 
-Would you like to see how much you could have earned, if you had chosen differently?
-
-    <div>
-        <button name="information_shown" value="True" class="btn btn-primary btn-large">Yes</button>
-        <button name="information_shown" value="False" class="btn btn-primary btn-large">No</button>
-    </div>
 {% endif %}
 
 <!-- Self No Avoidance Option -->
-{% if player.treatment == "no_self" %}
-In this round, you have chosen to invest a total of {{player.investment}} tokens in Option {{player.chosen_option}}. On the next screen, you will find out how much you could have earned if you had instead invested {{ player.investment }} tokens in Option {% if player.chosen_option == "A" %}B{% else %}A{% endif %}. Recall that the outcomes of those two options are independent, so if the investment did not pay off with one option, it could still have paid off with the other option.
+{% if player.treatment == "optional" %}
+In this round, you have chosen to invest a total of {{total_investment}} tokens in Option {{player.chosen_option}}. On the next screen, you have the option to see information about other participants’ investments.</br></br>
 
-    {% next_button %}
+The outcomes of those participants were not affected by your choices.</br></br>
+
 
 {% endif %}
 
-<!-- Other Avoidance Option -->
-{% if player.treatment == "other" %}
-In this round, you have chosen to invest a total of {{player.investment}} in Option {{player.chosen_option}}. You now have the option to find out how much you could have earned if you had instead invested {{player.investment}} tokens in Option {% if player.chosen_option == "A" %}B{% else %}A{% endif %}. Recall that the outcomes of these two options are independent, so if the investment did not pay off with one option, it could still have paid off with the other option.</br></br>
+{% next_button %}
 
-Would you like to see how much you could have earned, if you had chosen differently?
-
-    <div>
-        <button name="information_shown" value="True" class="btn btn-primary btn-large">Yes</button>
-        <button name="information_shown" value="False" class="btn btn-primary btn-large">No</button>
-    </div>
-
-{% endif %}
-
-<!-- Other No Avoidance Option -->
-{% if player.treatment == "no_other" %}
-In this round, you have chosen to invest a total of {{player.investment}} in Option {{player.chosen_option}}. You now have the option to find out how much you could have earned if you had instead invested {{player.investment}} tokens in Option {% if player.chosen_option == "A" %}B{% else %}A{% endif %}. Recall that the outcomes of these two options are independent, so if the investment did not pay off with one option, it could still have paid off with the other option.
-
-    {% next_button %}
-
-{% endif %}
-
-
-
-{{ form.information_shown.errors }}
 
 {% endblock %}
 

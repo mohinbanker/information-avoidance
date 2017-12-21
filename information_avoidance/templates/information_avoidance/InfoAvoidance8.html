@@ -1,0 +1,18 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Survey
+{% endblock %}
+
+{% block content %}
+
+{% formfield player.infoavoidance8 %}
+
+    {% next_button %}
+
+{% endblock %}
+
+{% block styles %}
+<link href="{% static "information_avoidance/supergame.css" %}" rel = "stylesheet">
+{% endblock %}

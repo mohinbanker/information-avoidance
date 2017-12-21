@@ -1,0 +1,54 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Information
+{% endblock %}
+
+{% block content %}
+
+Click one of the buttons below to see more information about other participants’ choices.  Or, hit the button below to skip to the next screen.
+
+<div id = "noinfo">
+    <button name="info_option" value = "skip_info" class="btn btn-primary btn-large" id = "noinfo_button">I don't want to see any additional information</button></br></br>
+</div>
+
+<table align = "center">
+    <tr>
+        <td>
+            <button name="info_option" value = "A" class="btn btn-primary btn-large"><span class = "label">Option A</span></br><span class = "subtable">[click if you want to see more]</span></button>
+        </td>
+        <td>
+            <button name="info_option" value = "B" class="btn btn-primary btn-large"><span class = "label">Option B</span></br><span class = "subtable">[click if you want to see more]</span>
+        </td></button>
+        <td>
+            <button name="info_option" value = "C" class="btn btn-primary btn-large"><span class = "label">Option C</span></br><span class = "subtable">[click if you want to see more]</span></button>
+        </td>
+    </tr>
+</table>
+
+{% endblock %}
+
+{% block styles %}
+<link href="{% static "information_avoidance/supergame.css" %}" rel = "stylesheet">
+
+<style type = "text/css">
+    .subtable{
+        font-size: 12px;
+    }
+    button{
+        margin-right: 40px;
+    }
+    #noinfo{
+        text-align: center;
+        margin-top: 10px;
+    }
+    #noinfo_button{
+        width:60%;
+    }
+    .label{
+        font-weight: bold;
+        font-size: 18px;
+    }
+</style>
+{% endblock %}

@@ -7,14 +7,14 @@
 
 {% block content %}
 
-You picked Option {{ player.chosen_option }} and invested {{ player.investment }} tokens, which earned you {{ player.earned }} tokens. </br></br>
+Another player picked <u>Option {{ player.info_option }}</u>.</br></br>
 
-{% if player.treatment == "self" or player.treatment == "no_self" %}
-If you had picked Option {{ player.info_option}}, and invested {{ player.info_investment }} tokens, you would have earned {{ player.info_earned }} tokens.
+The player invested {{ player.info_total_invested }} token{{player.info_total_invested|pluralize}}. The player's investment return was {{player.info_investment_return}} token{{player.info_investment_return|pluralize}}, so he or she received <b>{{player.info_earned_total}} token{{player.info_earned_total|pluralize}}</b>.</br>
 
-{% else %}
-The other player picked Option {{ player.info_option }}, and invested {{ player.info_investment }} tokens, which earned the player {{ player.info_earned }} tokens.
-{% endif %}
+The player did not invest <b>{{player.info_not_invested}} token{{player.info_not_invested|pluralize}}</b>, and the tokens were returned to him or her.</br>
+
+The player was left with: {{player.info_earned_total}} + {{player.info_not_invested}} = <b>{{player.info_revenue}} token{{player.info_revenue|pluralize}}</b>.
+
 
 </br></br>
 

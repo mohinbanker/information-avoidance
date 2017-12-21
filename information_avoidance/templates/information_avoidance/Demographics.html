@@ -1,0 +1,29 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Survey
+{% endblock %}
+
+{% block content %}
+
+{% formfield player.is_male %}
+{% formfield player.english %}
+
+<div class="form-group">
+	<label class="control-label" for="id_age">How old are you?</label>
+	<div class="controls  field-age">
+		<input type="number" name="age" step="1" min="18" max="100" id="id_age" class="form-control">
+	</div><!--- .controls -->
+</div>
+
+
+</br></br>
+
+    {% next_button %}
+
+{% endblock %}
+
+{% block styles %}
+<link href="{% static "information_avoidance/supergame.css" %}" rel = "stylesheet">
+{% endblock %}

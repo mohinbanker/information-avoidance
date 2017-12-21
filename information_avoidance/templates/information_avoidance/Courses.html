@@ -1,0 +1,43 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Survey
+{% endblock %}
+
+{% block content %}
+
+<div class="form-group">
+	<label class="control-label">Please indicate if you have taken college-level coursework in any of the following fields. (Mark all)</label>
+
+	<div class="controls">
+		<ul>
+			<li>
+			<label for="id_econ_exp_1"><input type="radio" id="id_econ_exp_1" value="True" name="econ_exp"> Yes</label>
+			<label for="id_econ_exp_2"><input type="radio" id="id_econ_exp_2" value="False" name="econ_exp"> No</label>&nbsp;&nbsp; Microeconomics or game theory
+			</li>
+
+			<li>
+			<label for="id_marketing_exp_1"><input type="radio" id="id_marketing_exp_1" value="True" name="marketing_exp"> Yes</label>
+			<label for="id_marketing_exp_2"><input type="radio" id="id_marketing_exp_2" value="False" name="marketing_exp"> No</label>&nbsp;&nbsp; Marketing or business
+			</li>
+
+			<li>
+			<label for="id_law_exp_1"><input type="radio" id="id_law_exp_1" value="True" name="law_exp"> Yes</label>
+			<label for="id_law_exp_2"><input type="radio" id="id_law_exp_2" value="False" name="law_exp"> No</label>&nbsp;&nbsp; Law
+			</li>
+		</ul>
+	</div><!--- .controls -->
+</div>
+
+</br></br>
+
+{{ form.errors }}
+
+    {% next_button %}
+
+{% endblock %}
+
+{% block styles %}
+<link href="{% static "information_avoidance/supergame.css" %}" rel = "stylesheet">
+{% endblock %}

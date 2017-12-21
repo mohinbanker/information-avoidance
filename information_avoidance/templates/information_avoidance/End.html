@@ -1,0 +1,16 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree_tags %}
+
+{% block content %}
+
+Thank you for your participation today.  Please wait patiently for the experimenter to call your subject number.  When your number is called, gather all of your belongings, and walk to where you will be paid.</br></br>
+
+Your subject number is {{participant.id_in_session}}.</br></br>
+
+Please remember that this research is only valuable if all participants have the same experience.  Therefore, please do not discuss this experiment with others outside of the lab.
+
+{% endblock %}
+
+{% block styles %}
+<link href="{% static "information_avoidance/supergame.css" %}" rel = "stylesheet">
+{% endblock %}
